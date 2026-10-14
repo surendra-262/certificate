@@ -1,0 +1,48 @@
+/* =====================================================
+   1) base.css - PAGE LOOK (form, buttons, tabs, background)
+   Colours ni marchali ante :root line lo hex codes marchandi.
+   ===================================================== */
+:root{--bg:#eef0f4;--panel:#fff;--ink:#14213d;--muted:#5a6478;--line:#cfd5e1;--gold:#b8892b;--btn:#14213d;--btnink:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1420;--panel:#1a2133;--ink:#e8ecf5;--muted:#9aa5bd;--line:#2f3a54;--btn:#d9a63f;--btnink:#14213d}}
+:root[data-theme="dark"]{--bg:#0f1420;--panel:#1a2133;--ink:#e8ecf5;--muted:#9aa5bd;--line:#2f3a54;--btn:#d9a63f;--btnink:#14213d}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Source Sans 3","Noto Sans Telugu",system-ui,sans-serif;line-height:1.5}
+header{padding:18px 24px 0}
+h1{font-family:"Cormorant Garamond",serif;font-size:30px;margin:0}
+.tabs{display:flex;gap:6px;margin-top:10px}
+.tab{background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:6px 6px 0 0}
+.tab.on{background:var(--btn);color:var(--btnink);border-color:var(--btn)}
+main{padding:16px 24px 32px}
+.gen{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start}
+@media(max-width:900px){.gen{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
+h3{margin:0 0 4px;font-size:18px}
+label{display:block;font-weight:600;font-size:14px;margin:12px 0 4px}
+input,select,textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+textarea{min-height:84px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+button{padding:10px 16px;border:0;border-radius:6px;background:var(--btn);color:var(--btnink);font:inherit;font-weight:600;cursor:pointer}
+button.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.note{font-size:13px;color:var(--muted);margin-top:10px}
+.admin{display:none;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+@media(max-width:900px){.admin{grid-template-columns:1fr}}
+body.isadmin .gen{display:none}body.isadmin .admin{display:grid}
+.bulk{display:none}body.isbulk .gen{display:none}body.isbulk .bulk{display:block}
+.verify{display:none;max-width:900px}body.isverify .gen{display:none}body.isverify .admin{display:none!important}body.isverify .bulk{display:none!important}body.isverify .verify{display:block}
+.qrbox{text-align:center;font:600 11px "Source Sans 3",sans-serif;color:#5a6478}
+.qrbox img,.qrbox canvas,.qrbox table{margin:0 auto}
+#cqr,#lqr{width:72px;height:72px;margin:0 auto}
+#cqr img,#cqr canvas,#lqr img,#lqr canvas{width:66px!important;height:66px!important}
+#cqrref,#lqrref{display:block;margin-top:2px;font-size:11px}
+#vmsg{font-weight:600}
+#vmsg.ok{color:#1b5e3a}#vmsg.bad{color:#a02020}
+table.prev{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px}
+table.prev th,table.prev td{border:1px solid var(--line);padding:5px 7px;text-align:left}
+table.prev th{background:var(--bg)}
+#bProg{margin-top:10px;font-size:14px;font-weight:600}
+#bProg .bar{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:4px}
+#bProg .fill{height:100%;background:var(--gold);width:0%}

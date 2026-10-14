@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<title>AP Police Certificate Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;600;700&family=Cormorant+Garamond:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<script defer crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script defer crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script defer crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script defer crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script defer crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/certificate.css">
+<link rel="stylesheet" href="css/borders.css">
+<link rel="stylesheet" href="css/sports-bg.css">
+<link rel="stylesheet" href="css/print.css">
+<style id="pg">@page{size:A4 landscape;margin:0}</style>
+</head>
+<body>
+<header>
+ <h1>AP Police Certificate Generator</h1>
+ <div class="tabs"><button class="tab on" id="tGen">Generate</button><button class="tab" id="tBulk">Bulk (Excel)</button><button class="tab" id="tVer">Verify</button><button class="tab" id="tAdm">Admin</button></div>
+</header>
+<main>
+<div class="gen">
+ <section class="panel" aria-label="Details">
+  <label for="wing">Wing</label><select id="wing"></select>
+  <label for="border">Border design</label>
+  <select id="border">
+   <option value="b-classic">Classic (navy &amp; gold)</option>
+   <option value="b-royal">Royal gold</option>
+   <option value="b-maroon">Maroon &amp; gold</option>
+   <option value="b-minimal">Minimal thin line</option>
+   <option value="b-corners">Corner brackets only</option>
+   <option value="b-triple">Triple line frame</option>
+   <option value="b-modern">Modern layered (navy &amp; orange)</option>
+   <option value="b-sports">Sports award</option>
+   <option value="b-heritage">Heritage ornate</option>
+   <option value="b-emerald">Emerald &amp; gold</option>
+   <option value="b-stripe" selected>Stripe award (navy &amp; gold diagonal)</option>
+   <option value="b-sportfest">Sports fest (players strip)</option>
+   <option value="b-custom">Custom template (uploaded)</option>
+  </select>
+  <label for="tpl">Certificate / letter type</label><select id="tpl"></select>
+  <label for="name">Recipient name</label>
+  <div style="display:flex;gap:8px;align-items:center">
+   <input id="name" value="Sri K. Ramesh" style="flex:1">
+   <input id="nameColor" type="color" value="#14213d" title="Name text color" style="width:40px;padding:2px;flex:none">
+  </div>
+  <label for="desig">Rank / designation / unit</label><input id="desig" value="Head Constable, Vijayawada Commissionerate">
+  <label for="event">Programme / event / game</label><input id="event" value="Annual Police Duty Meet 2026">
+  <label for="result">Position / result (sports, optional)</label><input id="result" value="First Place">
+  <label for="body">Text (edit freely)</label><textarea id="body"></textarea>
+  <div class="row">
+   <div><label for="date">Date</label><input id="date" type="date"></div>
+   <div><label for="place">Place</label><input id="place" value="Vijayawada"></div>
+  </div>
+  <div class="row">
+   <div><label for="issuer">Issuing officer</label><input id="issuer" value="Commissioner of Police"></div>
+   <div><label for="cno2">Ref / Cert. no.</label><input id="cno2" value="APP/2026/001"></div>
+  </div>
+  <label for="org">Office name</label><input id="org" value="Andhra Pradesh Police">
+  <label for="logo">Change logo (optional)</label><input id="logo" type="file" accept="image/*">
+  <label for="wmarkfile">Watermark logo (different ga marchukovachhu)</label><input id="wmarkfile" type="file" accept="image/png,image/jpeg,image/webp">
+  <div class="row" style="margin-top:8px">
+   <div><label for="wmarkop">Watermark opacity</label><input id="wmarkop" type="range" min="3" max="25" value="8"></div>
+   <div><label>&nbsp;</label><button id="wmarkclear" class="alt" type="button" style="width:100%;padding:9px 2px">Reset watermark</button></div>
+  </div>
+  <label style="font-weight:400;font-size:13px;margin-top:8px"><input id="wmarkshow" type="checkbox" checked style="width:auto;display:inline-block;margin-right:6px;vertical-align:middle">Show watermark on certificate</label>
+  <label for="sigfile">Digital signature (transparent PNG best)</label><input id="sigfile" type="file" accept="image/png,image/jpeg,image/webp">
+  <div class="row" style="margin-top:8px">
+   <div><label for="sigsize">Signature size</label><input id="sigsize" type="range" min="30" max="100" value="56"></div>
+   <div><label>&nbsp;</label><button id="sigclear" class="alt" type="button" style="width:100%;padding:9px 2px">Clear signature</button></div>
+  </div>
+  <label style="font-weight:400;font-size:13px;margin-top:8px"><input id="sigshow" type="checkbox" checked style="width:auto;display:inline-block;margin-right:6px;vertical-align:middle">Show signature on certificate &amp; letter</label>
+  <label style="font-weight:400;font-size:13px;margin-top:6px"><input id="qrshow" type="checkbox" checked style="width:auto;display:inline-block;margin-right:6px;vertical-align:middle">Show QR verification code (Ref No + security hash)</label>
+  <label for="bgfile">Background template (online design upload)</label><input id="bgfile" type="file" accept="image/png,image/jpeg,image/webp">
+  <div class="row" style="margin-top:8px">
+   <div><label for="bgshadeop">Text shade (readability)</label><input id="bgshadeop" type="range" min="0" max="85" value="35"></div>
+   <div><label>&nbsp;</label><button id="bgclear" class="alt" type="button" style="width:100%;padding:9px 2px">Remove template</button></div>
+  </div>
+  <label style="font-weight:400;font-size:13px;margin-top:8px"><input id="bguse" type="checkbox" checked style="width:auto;display:inline-block;margin-right:6px;vertical-align:middle">Use uploaded background (full page)</label>
+  <p class="note">Online lo nachina certificate template download chesi ikkada upload cheyandi - text automatic ga dani meedha vasthundi. Refresh chesthe malli upload cheyali.</p>
+  <label>Colors</label>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px 6px">
+   <div style="text-align:center"><input id="cTitle" type="color" value="#14213d" style="width:100%;padding:2px"><small class="note" style="margin:2px 0 0">Title</small></div>
+   <div style="text-align:center"><input id="cAccent" type="color" value="#b8892b" style="width:100%;padding:2px"><small class="note" style="margin:2px 0 0">Accent/gold</small></div>
+   <div style="text-align:center"><input id="cBorder" type="color" value="#14213d" style="width:100%;padding:2px"><small class="note" style="margin:2px 0 0">Border</small></div>
+   <div style="text-align:center"><input id="cBody" type="color" value="#14213d" style="width:100%;padding:2px"><small class="note" style="margin:2px 0 0">Body text</small></div>
+   <div style="text-align:center"><input id="cBg" type="color" value="#fffdf6" style="width:100%;padding:2px"><small class="note" style="margin:2px 0 0">Background</small></div>
+   <div style="text-align:center"><button id="cReset" class="alt" style="width:100%;padding:8px 2px;font-size:12px">Reset colors</button></div>
+  </div>
+  <div class="actions"><button id="dlpdf">Download PDF</button><button id="print" class="alt">Print (browser dialog)</button><button id="next" class="alt">Next recipient</button></div>
+  <p id="pdfMsg" class="note" style="display:none"></p>
+  <p class="note">"Download PDF" works everywhere, including mobile. "Print" opens your browser's print dialog — choose "Save as PDF" there and turn off headers and footers.</p>
+ </section>
+ <section id="stage" aria-label="Preview"><div id="scaler"><div id="cert">
+  <div id="wmark"><img id="wmarkimg" alt=""></div>
+  <div id="custombg"><img id="custombgimg" alt=""></div><div id="bgshade"></div>
+  <div id="certView">
+   <span class="corner-br"></span><span class="corner-bl"></span><span class="hex1"></span><span class="hex2"></span><span class="medal">🏅</span>
+   <div id="cno"></div>
+   <div class="org"><div class="logo" data-logo></div><div><h2 class="corg"></h2><div class="wing cw"></div><small>Government of Andhra Pradesh</small></div></div>
+   <div id="ctitle" class="edit" contenteditable="true" spellcheck="false"></div><div id="ctitleTe" class="edit" contenteditable="true" spellcheck="false"></div><div class="rule"></div>
+   <p id="cpre" class="edit" contenteditable="true" spellcheck="false"></p><div id="cname"></div><div id="cdesig"></div><div id="cbody"></div>
+   <div class="foot"><div class="sig"><div id="cdate"></div><small id="cplace"></small></div><div class="qrbox" id="cqrbox"><div id="cqr"></div><small id="cqrref"></small><small>Scan to verify</small></div><div class="sig"><img id="csig" alt="Signature"><div class="line" id="cissuer"></div><small>Signature &amp; seal</small></div></div>
+  </div>
+  <div id="letterView">
+   <div class="lh"><div class="org"><div class="logo" data-logo></div><div><h2 class="corg"></h2><div class="wing cw"></div><small>Government of Andhra Pradesh</small></div></div></div>
+   <div class="lmeta"><span id="lref"></span><span id="ldate"></span></div>
+   <div class="lto"><b>To,</b><br><span id="lname"></span><br><span id="ldesig"></span></div>
+   <div id="lsub" class="edit" contenteditable="true" spellcheck="false"></div><div id="lsal" class="edit" contenteditable="true" spellcheck="false"></div><div id="lbody"></div>
+   <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:auto;gap:16px"><div class="qrbox" id="lqrbox"><div id="lqr"></div><small id="lqrref"></small><small>Scan to verify</small></div><div class="lsig"><img id="lsigimg" alt="Signature"><div id="lissuer"></div></div></div>
+  </div>
+ </div></div>
+ <p id="editHint">Click directly on the title or the line above the name to retype them for this wing. For the paragraph text, use the "Text" box in the panel on the left — both update the certificate instantly.</p>
+ <div class="actions" style="justify-content:center">
+  <button id="saveAsTpl" class="alt">Save this wording as the template default</button>
+  <button id="resetText" class="alt">Reset wording to template</button>
+ </div>
+ </section>
+</div>
+
+<div class="admin">
+ <section class="panel">
+  <h3>Wings</h3>
+  <p class="note">One wing per line. These appear in the dropdown on the Generate tab.</p>
+  <textarea id="wingsTxt" style="min-height:220px"></textarea>
+  <div class="actions"><button id="saveWings">Save wings</button></div>
+  <h3 style="margin-top:22px">Backup</h3>
+  <p class="note">Wings and templates are saved in this browser. To move them to another device, export here and import there.</p>
+  <textarea id="io" placeholder="Click Export to see the JSON here. To import, paste JSON here first."></textarea>
+  <div class="actions"><button id="exp" class="alt">Export</button><button id="imp" class="alt">Import</button><button id="reset" class="alt">Reset to defaults</button></div>
+ </section>
+ <section class="panel">
+  <h3>Certificate / letter templates</h3>
+  <label for="aSel">Edit template</label><select id="aSel"></select>
+  <label for="tName">Template name</label><input id="tName">
+  <label for="tKind">Format</label>
+  <select id="tKind"><option value="c">Certificate (landscape)</option><option value="l">Letter (portrait)</option></select>
+  <label for="tTitle">Title (certificate title / letter subject)</label><input id="tTitle">
+  <label for="tTe">Telugu title (certificate only)</label><input id="tTe">
+  <label for="tPre">Line before name / salutation</label><input id="tPre">
+  <label for="tBody">Default text</label><textarea id="tBody" style="min-height:120px"></textarea>
+  <p class="note">Placeholders: {name} {event} {wing} {result}</p>
+  <div class="actions"><button id="tSave">Save template</button><button id="tNew" class="alt">New template</button><button id="tDel" class="alt">Delete</button></div>
+ </section>
+</div>
+
+<div class="bulk panel" style="max-width:900px">
+ <h3>Bulk generate from Excel / CSV</h3>
+ <p class="note">The first row of the Excel file must contain column headers: <b>Name</b> (required), Designation, Event, Result, Date, Place, Email (all optional). To mix different wings and certificate types in one sheet, add a <b>Type</b> column (matching a template name, e.g. "Sports Winner Certificate") and/or a <b>Wing</b> column (matching a wing name) — any row without these uses the template/wing currently selected on the Generate tab: <b id="bInfo"></b>.</p>
+ <label for="bFile">Upload .xlsx / .csv file</label>
+ <input id="bFile" type="file" accept=".xlsx,.xls,.csv">
+ <p class="note">Or paste rows here (first line = headers, comma separated):</p>
+ <textarea id="bPaste" placeholder="Name,Designation,Event,Email&#10;K. Ramesh,Head Constable,Annual Duty Meet,ramesh@example.com" style="min-height:90px"></textarea>
+ <div class="actions"><button id="bParse" class="alt">Load rows</button></div>
+ <div id="bPrevWrap" style="display:none">
+  <p class="note" id="bCount"></p>
+  <div style="overflow-x:auto"><table class="prev" id="bTable"></table></div>
+  <div class="actions">
+   <button id="bGo">Generate all as PDFs (ZIP)</button>
+  </div>
+  <div id="bProg" style="display:none"><span id="bProgTxt"></span><div class="bar"><div class="fill" id="bFill"></div></div></div>
+ </div>
+ <h3 style="margin-top:22px">Sending to emails</h3>
+ <p class="note">This page runs entirely in the browser, so it cannot automatically attach PDFs and send bulk emails on its own — that requires a connected mail account. Download the ZIP and send it through your office Outlook/Gmail mail-merge tool, or connect a Gmail/Outlook account to this chat and this can be automated end to end — just ask.</p>
+</div>
+
+<div class="verify panel">
+ <h3>Verify Certificate</h3>
+ <p class="note">Certificate meedha QR ni phone tho scan chesi vachhina text ni kindha paste cheyandi. Leda Ref No + Name + Event + Date manual ga enter chesi Verify cheyandi. Hash match + Issue Register rendu check avthundi.</p>
+ <label for="vqr">QR text (scan result)</label><input id="vqr" placeholder="APPOLICE|APP/2026/001|A1B2C3D4" autocomplete="off">
+ <div class="row">
+  <div><label for="vref">Ref / Cert. No.</label><input id="vref" placeholder="APP/2026/001" autocomplete="off"></div>
+  <div><label for="vdate">Date (YYYY-MM-DD)</label><input id="vdate" placeholder="2026-10-12" autocomplete="off"></div>
+ </div>
+ <div class="row">
+  <div><label for="vname">Recipient name</label><input id="vname" placeholder="Sri K. Ramesh" autocomplete="off"></div>
+  <div><label for="vevent">Event / Programme</label><input id="vevent" placeholder="Annual Police Duty Meet 2026" autocomplete="off"></div>
+ </div>
+ <div class="actions"><button id="vgo">Verify</button><button id="vfill" class="alt">Fill from QR</button></div>
+ <p id="vmsg" class="note"></p>
+ <h3 style="margin-top:22px">Issue Register (this browser)</h3>
+ <p class="note">Download / Bulk dwara issue chesina certificates ikkada auto-save avthayi. Vere device lo issue chesindhi ikkada kanipinchadu - appudu hash check matrame use cheyandi.</p>
+ <p class="note" id="regcount"></p>
+ <div style="overflow-x:auto"><table class="prev" id="regtable"></table></div>
+ <div class="actions"><button id="regexp" class="alt">Export CSV</button><button id="regclr" class="alt">Clear register</button></div>
+</div>
+</main>
+<script src="js/logo.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+/* =====================================================
+   3) borders.css - BORDER DESIGNS (12 rakalu)
+   Prathi design ki head untundi (Classic/Royal/Maroon/...).
+   Colour marchali ante aa design block lone hex code marchandi.
+   Kottha design kavali ante .b-myname #certView {...} add cheyandi
+   + index.html dropdown lo option add cheyandi.
+   ===================================================== */
+/* Border style variants, chosen from the dropdown */
+.b-royal #certView{border:7px double #b8892b;outline:1px solid #14213d;outline-offset:-15px}
+.b-maroon #certView{border:6px double #7a1f2b;outline:2px solid #b8892b;outline-offset:-14px}
+.b-minimal #certView{border:2px solid #14213d;outline:none}
+.b-corners #certView{border:none;outline:none}
+.b-corners #certView::before,.b-corners #certView::after,.b-corners #certView .corner-br,.b-corners #certView .corner-bl{content:"";position:absolute;width:64px;height:64px;border:3px solid #b8892b}
+.b-corners #certView::before{top:-6px;left:-6px;border-right:none;border-bottom:none}
+.b-corners #certView::after{top:-6px;right:-6px;border-left:none;border-bottom:none}
+.corner-br{bottom:-6px;right:-6px;border-left:none;border-top:none}
+.corner-bl{bottom:-6px;left:-6px;border-right:none;border-top:none}
+.b-triple #certView{border:3px solid #14213d;outline:3px solid #b8892b;outline-offset:-10px;box-shadow:inset 0 0 0 16px #fffdf6, inset 0 0 0 17px #14213d}
+.letter.b-royal .lh,.letter.b-maroon .lh,.letter.b-minimal .lh,.letter.b-corners .lh,.letter.b-triple .lh{border-bottom-color:#14213d}
+.letter.b-royal .lh{border-bottom:4px double #b8892b}
+.letter.b-maroon .lh{border-bottom:4px double #7a1f2b}
+.letter.b-minimal .lh{border-bottom:1px solid #14213d}
+.b-modern #certView{border:none;outline:none;padding:34px 50px 34px 96px}
+.b-modern #certView::before{content:"";position:absolute;inset:0;border:3px solid #e8821e}
+.b-modern #certView::after{content:"";position:absolute;top:0;bottom:0;left:0;width:58px;background:#16222b;box-shadow:4px 0 0 #e8821e}
+.b-modern .hex1,.b-modern .hex2{position:absolute;width:30px;height:30px;transform:rotate(45deg)}
+.b-modern .hex1{right:30px;bottom:30px;background:#e8821e}
+.b-modern .hex2{right:56px;bottom:56px;background:#16222b;opacity:.9}
+.letter.b-modern .lh{border-bottom:4px solid #e8821e}
+.b-sports #certView{border:none;outline:none;border-left:5px solid #1e3a8a;border-right:5px solid #1e3a8a;padding:50px 50px 44px}
+.b-sports #certView::before{content:"";position:absolute;top:0;left:0;right:0;height:14px;background:linear-gradient(90deg,#1e3a8a 0 33%,#f5b014 33% 66%,#c0392b 66% 100%)}
+.b-sports #certView::after{content:"";position:absolute;bottom:0;left:0;right:0;height:14px;background:linear-gradient(90deg,#c0392b 0 33%,#f5b014 33% 66%,#1e3a8a 66% 100%)}
+.medal{display:none}
+.b-sports .medal{display:block;position:absolute;top:22px;left:50%;transform:translateX(-50%);font-size:30px}
+.b-heritage #certView{border:5px ridge #7a1f2b;outline:2px double #b8892b;outline-offset:-13px}
+.b-emerald #certView{border:6px double #1b5e3a;outline:2px solid #c9a227;outline-offset:-14px}
+.b-stripe#cert{background:#0e2a52}
+.b-stripe#cert::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(115deg,transparent 0 68%,#f2b90d 68% 70%,#0e2a52 70% 72%,#f2b90d 72% 75%,transparent 75%),linear-gradient(295deg,transparent 0 68%,#f2b90d 68% 70%,#0e2a52 70% 72%,#f2b90d 72% 75%,transparent 75%),linear-gradient(65deg,transparent 0 68%,#f2b90d 68% 70%,#0e2a52 70% 72%,#f2b90d 72% 75%,transparent 75%),linear-gradient(245deg,transparent 0 68%,#f2b90d 68% 70%,#0e2a52 70% 72%,#f2b90d 72% 75%,transparent 75%)}
+.b-stripe #certView{border:3px solid #12325b;outline:2px solid #c9a227;outline-offset:-10px;background:#fffdf6}
+.b-stripe .medal{display:none}
+.letter.b-stripe .lh{border-bottom:4px solid #12325b;box-shadow:0 2px 0 #c9a227}
+#cert.b-sportfest{background:#0b3d66}
+.b-sportfest #certView{border:3px double #0b3d66;outline:2px solid #c9a227;outline-offset:-12px}
+.b-sportfest .hex1,.b-sportfest .hex2{display:none}
+.letter.b-sportfest .lh{border-bottom:4px solid #0b3d66;box-shadow:0 2px 0 #c9a227}
+#custombg{display:none;position:absolute;inset:0;z-index:0;pointer-events:none}
+#custombg img{width:100%;height:100%;object-fit:cover}
+#bgshade{display:none;position:absolute;inset:0;z-index:0;pointer-events:none}
+.b-custom #certView{border:none;outline:none;box-shadow:none;background:transparent}
+.letter.b-custom .lh{border-bottom:2px solid #14213d}
+.letter.b-sports .lh{border-bottom:4px solid #1e3a8a;box-shadow:0 4px 0 -1px #f5b014}
+.letter.b-heritage .lh{border-bottom:4px ridge #7a1f2b}
+.letter.b-emerald .lh{border-bottom:4px double #1b5e3a}
+.letter #certView{display:none}
+#letterView{display:none;position:absolute;inset:0;padding:56px 64px;flex-direction:column}
+.letter #letterView{display:flex}
+.org{display:flex;align-items:center;gap:18px;text-align:left}
+.org h2{margin:0;font-size:36px;letter-spacing:1px;white-space:nowrap}
+.org small{display:block;font:600 18px "Noto Sans Telugu","Source Sans 3",sans-serif;color:#5a6478}
+.wing{font:700 20px "Source Sans 3",sans-serif;color:#b8892b}
+.lh .org h2{font-size:28px}
+#ctitle{font-size:50px;font-weight:700;margin:22px 0 0;color:var(--c-title,#14213d)}
+#ctitleTe{font:600 20px "Noto Sans Telugu",sans-serif;color:var(--c-accent,#b8892b);margin-top:2px}
+.rule{width:220px;height:3px;background:var(--c-accent,#b8892b);margin:14px 0}
+#cpre{font-size:22px;font-style:italic;margin:0}
+#cname{font-size:44px;font-weight:700;margin:6px 0 0;border-bottom:1px solid #b8892b;padding:0 40px 4px;min-width:420px}
+#cdesig{font:600 17px "Source Sans 3",sans-serif;color:#5a6478;margin-top:6px}
+#cbody{font-size:23px;line-height:1.45;max-width:800px;margin:16px 0 0;white-space:pre-line}
+.foot{margin-top:auto;width:100%;display:flex;justify-content:space-between;align-items:flex-end;font:600 16px "Source Sans 3",sans-serif}
+.sig{min-width:230px;text-align:center}
+.sig .line{border-top:1px solid #14213d;padding-top:4px}
+.sig small{display:block;font-weight:400;color:#5a6478}
+.sig img#csig{max-height:56px;max-width:220px;object-fit:contain;margin:0 auto 2px;display:none}
+.lsig img#lsigimg{max-height:64px;max-width:240px;object-fit:contain;margin:0 auto 2px;display:none}
+#cno{position:absolute;top:44px;right:52px;font:600 13px "Source Sans 3",sans-serif;color:#5a6478}
+.lh{display:flex;justify-content:space-between;align-items:center;border-bottom:3px double #14213d;padding-bottom:14px}
+.lmeta{display:flex;justify-content:space-between;margin-top:22px;font:600 15px "Source Sans 3",sans-serif}
+.lto{margin-top:22px;font:400 17px "Source Sans 3",sans-serif;line-height:1.5}
+#lsub{margin-top:18px;font:700 18px "Source Sans 3",sans-serif;text-decoration:underline}
+#lsal{margin-top:18px;font:400 18px "Source Sans 3",sans-serif}
+#lbody{margin-top:12px;font:400 18px/1.7 "Source Sans 3",sans-serif;white-space:pre-line;text-align:justify}
+.lsig{margin-top:auto;align-self:flex-end;text-align:center;font:600 17px "Source Sans 3",sans-serif}
+.lsig div{margin-top:56px;border-top:1px solid #14213d;padding-top:4px;min-width:240px}
